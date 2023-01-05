@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ 
+<head>
+  <meta charset="utf-8">
+  <title>Simple Calculator using HTML, CSS and JavaScript</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+ 
+    <table class="calculator" >
+    <tr>
+        <td colspan="3"> 
+            <p>Calculator<p/> </td>
+        <td> 
+      </tr>
+      <tr>
+        <td colspan="4"> 
+            <input class="display-box" type="text" id="result" disabled /> 
+          </td>
+      </tr>
+      <tr>
+        <td> <button class="button" value="%" onclick="display('%')" >%</button> </td>
+        <td> <button id="ce" class="button" value="CE" onclick="clearScreen()" >CE</button> </td>
+        <td> <button class="button" value="C" onclick="clearScreen()" id="btn"  >C</button> </td>
+        <td> <button id="backspace" class="button" value="bs" onclick="display('bs')" ><i class="fa fa-backspace"></i></button> </td>
+      </tr>
+      <tr>
+        <!-- display() function displays the value of clicked button -->
+        <td> <button id="1" class="button" value="1" onclick="display('1')" >1</button> </td>
+        <td> <button id="2" class="button" value="2" onclick="display('2')" >2</button> </td>
+        <td> <button id="3" class="button" value="3" onclick="display('3')" >3</button> </td>
+        <td> <button id="divide" class="button" value="/" onclick="display('/')" >/</button> </td>
+      </tr>
+      <tr>
+        <td> <button id="4" class="button" value="4" onclick="display('4')" >4</button> </td>
+        <td> <button id="5" class="button" value="5" onclick="display('5')" >5</button> </td>
+        <td> <button id="6" class="button" value="6" onclick="display('6')" >6</button> </td>
+        <td> <button id="subtract" class="button" value="-" onclick="display('-')" >-</button> </td>
+      </tr>
+      <tr>
+        <td> <button id="7" class="button" value="7" onclick="display('7')" >7</button> </td>
+        <td> <button id="8" class="button" value="8" onclick="display('8')" >8</button> </td>
+        <td> <button id="9" class="button" value="9" onclick="display('9')" >9</button> </td>
+        <td> <button id="add" class="button" value="+" onclick="display('+')" >+</button> </td>
+      </tr>
+      <tr>
+        <td> <button id="period" class="button" value="." onclick="display('.')" >.</button> </td>
+        <td> <button id="0" class="button" value="0" onclick="display('0')" >0</button> </td>
+     
+        <!-- calculate() function evaluates the mathematical expression -->
+        <td> <button id="enter" class="button" value="=" onclick="calculate()" id="btn" >=</button> </td>
+        <td> <button id="multiply" class="button" value="*" onclick="display('*')" >*</button></td>
+      </tr>
+    </table>
+     
+    <script type="text/javascript" src="script.js"></script>
+     
+    </body>
+     
+    </html>
