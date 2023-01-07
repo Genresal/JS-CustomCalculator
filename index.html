@@ -16,9 +16,14 @@
             <p>Calculator<p/> </td>
         <td> 
       </tr>
+      <tr>
+        <td colspan="4"> 
+            <input class="display-box" type="text" id="displayOperator" disabled /> 
+          </td>
+      </tr>
       <tr>
         <td colspan="4"> 
-            <input class="display-box" type="text" id="result" disabled /> 
+            <input class="display-box" type="text" id="displayValue" disabled /> 
           </td>
       </tr>
       <tr>
@@ -32,19 +37,19 @@
         <td> <button id="1" class="button" value="1" onclick="display('1')" >1</button> </td>
         <td> <button id="2" class="button" value="2" onclick="display('2')" >2</button> </td>
         <td> <button id="3" class="button" value="3" onclick="display('3')" >3</button> </td>
-        <td> <button id="divide" class="button" value="/" onclick="display('/')" >/</button> </td>
+        <td> <button id="divide" class="button" value="/" onclick="moveToOperator('/')" >/</button> </td>
       </tr>
       <tr>
         <td> <button id="4" class="button" value="4" onclick="display('4')" >4</button> </td>
         <td> <button id="5" class="button" value="5" onclick="display('5')" >5</button> </td>
         <td> <button id="6" class="button" value="6" onclick="display('6')" >6</button> </td>
-        <td> <button id="subtract" class="button" value="-" onclick="display('-')" >-</button> </td>
+        <td> <button id="subtract" class="button" value="-" onclick="moveToOperator('-')" >-</button> </td>
       </tr>
       <tr>
         <td> <button id="7" class="button" value="7" onclick="display('7')" >7</button> </td>
         <td> <button id="8" class="button" value="8" onclick="display('8')" >8</button> </td>
         <td> <button id="9" class="button" value="9" onclick="display('9')" >9</button> </td>
-        <td> <button id="add" class="button" value="+" onclick="display('+')" >+</button> </td>
+        <td> <button id="add" class="button" value="+" onclick="moveToOperator('+')" >+</button> </td>
       </tr>
       <tr>
         <td> <button id="period" class="button" value="." onclick="display('.')" >.</button> </td>
@@ -52,7 +57,7 @@
      
         <!-- calculate() function evaluates the mathematical expression -->
         <td> <button id="enter" class="button" value="=" onclick="calculate()" id="btn" >=</button> </td>
-        <td> <button id="multiply" class="button" value="*" onclick="display('*')" >*</button></td>
+        <td> <button id="multiply" class="button" value="*" onclick="moveToOperator('*')" >*</button></td>
       </tr>
     </table>
      

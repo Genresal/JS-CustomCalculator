@@ -1,23 +1,82 @@
-// This function clear all the values
+const calculator = {
+  value: null,
+  firstOperand: null,
+  secondOperand: null,
+  operator: null,
+waitingForSecondOperand: false,
+};
+
+const displayValue = document.getElementById('displayValue');
+const displayOperator = document.getElementById('displayOperator');
+
+function add(x, y) { return x + y; }
+function sub(x, y) { return x - y; }
+function mul(x, y) { return x * y; }
+function div(x, y) { return x / y; }
+
+var Command = function (execute, undo, value) {
+    this.execute = execute;
+    this.undo = undo;
+    this.value = value;
+}
+
+var AddCommand = function (value) {
+    return new Command(add, sub, value);
+};
+
+var SubCommand = function (value) {
+    return new Command(sub, add, value);
+};
+
+var MulCommand = function (value) {
+    return new Command(mul, div, value);
+};
+
+var DivCommand = function (value) {
+    return new Command(div, mul, value);
+};
+
+
 function clearScreen() {
-        document.getElementById("result").value = "";
+    displayValue.value = "";
+    displayOperator.value = "";
+    calculator = null;
     }
+
+function moveToOperator(operator) {
+    if (calculator.firstOperand == null) {
+        calculator.firstOperand = displayValue.value;
+    }
+        calculator.operator = operator;
+        displayOperator.value = `${calculator.firstOperand} ${calculator.operator}`;
+    calculator.waitingForSecondOperand = true;
+}
 
     function backspace() {
         var p = document.getElementById("result").value;
         document.getElementById("result").value = p.str.slice(0, -1);
     }
-     
-    // This function display values
+
     function display(value) {
-        document.getElementById("result").value += value;
+        if (calculator.waitingForSecondOperand) {
+            displayValue.value = value;
+            calculator.waitingForSecondOperand = false;
+        } else {
+            displayValue.value += value;
+        }
     }
-     
+
     // This function evaluates the expression and returns result
     function calculate() {
-        var p = document.getElementById("result").value;
-        var q = eval(p);
-        document.getElementById("result").value = q;
+        if (calculator.secondOperand != null) {
+            calculator.firstOperand = displayValue.value
+        } else {
+            calculator.secondOperand = displayValue.value;
+}
+        
+        displayOperator.value = `${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`;
+        var q = eval(displayOperator.value);
+        displayValue.value = q;
     }
 
   document.addEventListener('keydown', function(event) {
