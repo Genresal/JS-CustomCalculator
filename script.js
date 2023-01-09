@@ -1,123 +1,164 @@
-const calculator = {
-  value: null,
-  firstOperand: null,
-  secondOperand: null,
-  operator: null,
-  waitingForSecondOperand: false,
-};
-
-const displayValue = document.getElementById('displayValue');
-const displayOperator = document.getElementById('displayOperator');
-
-function add(x, y) {
-  return x + y
-}
-function sub(x, y) {
-  return x - y
-}
-function mul(x, y) {
-  return x * y
-}
-function div(x, y) {
-  return x / y
-}
-
-const Command = function (execute, undo, value) {
-  this.execute = execute
-  this.undo = undo;
-  this.value = value;
-}
-
-const AddCommand = function (value) {
-  return new Command(add, sub, value)
-}
-
-const SubCommand = function (value) {
-  return new Command(sub, add, value)
-}
-
-const MulCommand = function (value) {
-  return new Command(mul, div, value)
-}
-
-const DivCommand = function (value) {
-  return new Command(div, mul, value)
-}
+const displayElement = document.getElementById('displayElement');
+const displayBuffer = document.getElementById('displayBuffer');
 
 function clearScreen() {
-  displayValue.value = "";
-  displayOperator.value = "";
-  calculator = null;
+  displayElement.value = "";
+  displayBuffer.value = "";
+
+  firstOperand = 0;
+  secondOperand = 0;
+  operator = null;
+  waitingForSecondOperand = false;
 }
 
 function moveToOperator(operator) {
-  if (calculator.firstOperand == null) {
-    calculator.firstOperand = displayValue.value;
+  if (firstOperand == 0) {
+    firstOperand = displayElement.value;
+  } else if (this.operator && !waitingForSecondOperand) {
+    calculate();
+    firstOperand = displayElement.value
+    secondOperand = displayElement.value
   }
-  calculator.operator = operator;
-  displayOperator.value = `${calculator.firstOperand} ${calculator.operator}`
-  calculator.waitingForSecondOperand = true
+
+  this.operator = operator;
+  displayBuffer.value = `${firstOperand} ${operator}`
+  waitingForSecondOperand = true
 }
 
 function backspace() {
-  const p = document.getElementById('result').value
-  document.getElementById('result').value = p.str.slice(0, -1)
+  displayBuffer.value = "";
+  firstOperand = 0;
+  secondOperand = 0
+  operator = 0
 }
 
 function display(value) {
-  if (calculator.waitingForSecondOperand) {
-    displayValue.value = value;
-    calculator.waitingForSecondOperand = false
+  if (waitingForSecondOperand) {
+    displayElement.value = value;
+    waitingForSecondOperand = false
   } else {
-    displayValue.value += value;
+    displayElement.value += value;
   }
 }
 
-// This function evaluates the expression and returns result
+function onError(value) {
+  error = value;
+  displayElement.value = value
+}
+
 function calculate() {
-  if (calculator.secondOperand != null) {
-    calculator.firstOperand = displayValue.value;
+  if (secondOperand != 0) {
+    firstOperand = displayElement.value;
   } else {
-    calculator.secondOperand = displayValue.value;
+    secondOperand = displayElement.value;
   }
 
-  displayOperator.value = `${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`;
-  const q = eval(displayOperator.value);
-  displayValue.value = q
+  displayBuffer.value = `${firstOperand} ${operator} ${secondOperand}`;
+
+  selectCommandByOperator(operator)
+
+  displayElement.value = current;
+}
+
+function selectCommandByOperator(operator) {
+  switch (operator) {
+    case "+":
+      execute(AddCommand());
+      break
+    case "-":
+      execute(SubCommand());
+      break
+    case "*":
+      execute(MulCommand());
+      break;
+    case "/":
+      execute(DivCommand());
+      break;
+    default:
+      console.log("Unexpected opration.");
+  }
 }
 
 document.addEventListener("keydown", function (event) {
-  console.log("pressedButton " + event.code);
   if (event.code.startsWith("Digit")) {
     document.getElementById(event.code.at(-1)).click();
   } else if (event.code.startsWith('Numpad') && event.code.length == 7) {
     document.getElementById(event.code.at(-1)).click();
   } else if (event.code === 'Backspace') {
-    console.log("fires Backspace");
     document.getElementById("backspace").click();
   } else if (['Equal', 'Enter', 'NumpadEnter'].includes(event.code)) {
-    console.log("fires result");
     document.getElementById("enter").click();
   } else if (event.code === 'NumpadAdd') {
-    console.log("fires add");
     document.getElementById("add").click();
   } else if (['NumpadSubtract', 'Minus'].includes(event.code)) {
-    console.log("fires minus");
     document.getElementById("subtract").click();
   } else if (event.code === 'NumpadDivide') {
-    console.log("fires divide");
     document.getElementById("divide").click();
   } else if (event.code === 'NumpadMultiply') {
-    console.log("fires mul");
     document.getElementById("multiply").click();
   } else if (event.code === 'Period') {
-    console.log("fires per");
     document.getElementById("period").click();
   } else if (event.code === 'NumpadDecimal') {
-    console.log("fires ce");
     document.getElementById("ce").click();
   } else if (event.code === 'Digit9') {
-    console.log("pressed9");
     document.getElementById("9").click();
   }
 });
+
+//* ************
+
+var current = 0;
+var firstOperand = 0;
+var secondOperand = 0;
+var operator = null;
+var waitingForSecondOperand = false;
+const commands = []
+var error = null
+
+function add(x, y) {
+  return parseFloat(x) + parseFloat(y);
+}
+function sub(x, y) {
+  return x - y;
+}
+function mul(x, y) {
+  return x * y;
+}
+function div(x, y) {
+  if (y == 0) {
+    onError("Cannot divide by zero");
+    return
+  }
+  return x / y;
+}
+
+const Command = function (execute, undo) {
+  this.execute = execute
+  this.undo = undo;
+};
+
+const AddCommand = function () {
+  return new Command(add, sub)
+};
+
+const SubCommand = function () {
+  return new Command(sub, add)
+};
+
+const MulCommand = function () {
+  return new Command(mul, div)
+};
+
+const DivCommand = function () {
+  return new Command(div, mul)
+};
+
+function execute(command) {
+  current = command.execute(firstOperand, secondOperand);
+  commands.push(command)
+}
+
+function undo() {
+  const command = commands.pop()
+  current = command.undo(current, secondOperand)
+}
