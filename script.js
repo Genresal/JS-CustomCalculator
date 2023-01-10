@@ -17,7 +17,6 @@ function moveToOperator(operator) {
   } else if (this.operator && !waitingForSecondOperand) {
     calculate();
     firstOperand = displayElement.value;
-    secondOperand = displayElement.value;
   }
 
   this.operator = operator;
@@ -36,6 +35,7 @@ function display(value) {
   if (waitingForSecondOperand) {
     displayElement.value = value;
     waitingForSecondOperand = false;
+    secondOperand = 0;
   } else {
     displayElement.value += value;
   }
@@ -47,6 +47,7 @@ function onError(value) {
 }
 
 function calculate() {
+    console.log(`${firstOperand} ${operator} ${secondOperand}`);
   if (secondOperand != 0) {
     firstOperand = displayElement.value;
   } else {
@@ -58,6 +59,7 @@ function calculate() {
   selectCommandByOperator(operator)
 
   displayElement.value = current;
+  firstOperand = current;
 }
 
 function selectCommandByOperator(operator) {
@@ -104,8 +106,6 @@ document.addEventListener("keydown", function (event) {
     document.getElementById("9").click();
   }
 });
-
-//* ************
 
 var current = 0;
 var firstOperand = 0;
