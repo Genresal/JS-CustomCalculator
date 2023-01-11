@@ -81,12 +81,17 @@ function inputOperator(operator) {
 }
 
 function inputDigit(value) {
-    if(error) {
-        clearResult();
-        error = null;
+    if (error) {
+      clearResult();
+      error = null;
     }
 
-  if (waitingForSecondOperand || displayElement.value == 0) {
+    if (value == '.') {
+      displayElement.value += value;
+      return;
+    }
+
+  if (waitingForSecondOperand || displayElement.value === 0) {
     displayElement.value = value;
     waitingForSecondOperand = false;
     secondOperand = 0;
@@ -96,7 +101,7 @@ function inputDigit(value) {
 }
 
 function inputDecimalPoint(value) {
-    if (displayElement.value.charAt(displayElement.value.length-1) == '.') {
+    if (displayElement.value.includes('.') ) {
         return;
     }
     
