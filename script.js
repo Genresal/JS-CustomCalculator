@@ -1,5 +1,6 @@
 const displayElement = document.getElementById('displayElement');
 const displayBuffer = document.getElementById('displayBuffer');
+displayElement.value = 0;
 
 var current = 0;
 var firstOperand = 0;
@@ -64,9 +65,10 @@ function undo () {
 function inputOperator(operator) {
   if(error) {
     return;
-  }
-
-  if (firstOperand == 0) {
+  } else if (operator == '=') {
+    displayBuffer.value = `${firstOperand} ${operator}`;
+    return;
+  } else if (firstOperand == 0) {
     firstOperand = displayElement.value;
   } else if (this.operator && !waitingForSecondOperand) {
     calculate();
@@ -79,18 +81,26 @@ function inputOperator(operator) {
 }
 
 function inputDigit(value) {
-if(error) {
-  clearResult();
-  error = null;
-}
+    if(error) {
+        clearResult();
+        error = null;
+    }
 
-  if (waitingForSecondOperand) {
+  if (waitingForSecondOperand || displayElement.value == 0) {
     displayElement.value = value;
     waitingForSecondOperand = false;
     secondOperand = 0;
   } else {
     displayElement.value += value;
   }
+}
+
+function inputDecimalPoint(value) {
+    if (displayElement.value.charAt(displayElement.value.length-1) == '.') {
+        return;
+    }
+    
+    inputDigit(value);
 }
 
 function onError(value) {
@@ -104,7 +114,11 @@ function calculate() {
   }
 
     console.log(`${firstOperand} ${operator} ${secondOperand}`);
-  if (secondOperand != 0) {
+    if (operator == null || operator == '=') {
+      firstOperand = displayElement.value;
+      inputOperator('=');
+      return;
+    } else if (secondOperand != 0) {
     firstOperand = displayElement.value;
   } else {
     secondOperand = displayElement.value;
@@ -114,8 +128,12 @@ function calculate() {
 
   selectCommandByOperator(operator)
 
-  displayElement.value = current;
-  firstOperand = current;
+  if(!error) {
+    displayElement.value = current;
+    firstOperand = current;
+      waitingForSecondOperand = true;
+  }
+
 }
 
 function backspace() {
@@ -126,7 +144,7 @@ function backspace() {
 }
 
 function clearResult() {
-  displayElement.value = "";
+  displayElement.value = 0;
   displayBuffer.value = "";
 
   firstOperand = 0;
@@ -149,6 +167,9 @@ function selectCommandByOperator(operator) {
     case "/":
       execute(DivCommand());
       break
+    case "=":
+        execute(DivCommand());
+        break
     default:
       console.log("Unexpected opration.");
   }
@@ -163,7 +184,7 @@ document.addEventListener("keydown", function (event) {
   } else {
     switch (key) {
       case '.':
-        inputDigit(key);
+        inputDecimalPoint(key);
         break;
       case '+':
       case '-':
