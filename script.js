@@ -11,7 +11,7 @@ function clearScreen() {
   waitingForSecondOperand = false;
 }
 
-function moveToOperator(operator) {
+function inputOperator(operator) {
   if (firstOperand == 0) {
     firstOperand = displayElement.value;
   } else if (this.operator && !waitingForSecondOperand) {
@@ -31,7 +31,7 @@ function backspace() {
   operator = 0;
 }
 
-function display(value) {
+function inputDigit(value) {
   if (waitingForSecondOperand) {
     displayElement.value = value;
     waitingForSecondOperand = false;
@@ -82,29 +82,28 @@ function selectCommandByOperator(operator) {
 }
 
 document.addEventListener("keydown", function (event) {
-  if (event.code.startsWith("Digit")) {
-    document.getElementById(event.code.at(-1)).click();
-  } else if (event.code.startsWith("Numpad") && event.code.length == 7) {
-    document.getElementById(event.code.at(-1)).click();
-  } else if (event.code === "Backspace") {
-    document.getElementById("backspace").click();
-  } else if (["Equal", "Enter", "NumpadEnter"].includes(event.code)) {
-    document.getElementById("enter").click();
-  } else if (event.code === "NumpadAdd") {
-    document.getElementById("add").click();
-  } else if (["NumpadSubtract", "Minus"].includes(event.code)) {
-    document.getElementById("subtract").click();
-  } else if (event.code === "NumpadDivide") {
-    document.getElementById("divide").click();
-  } else if (event.code === "NumpadMultiply") {
-    document.getElementById("multiply").click();
-  } else if (event.code === "Period") {
-    document.getElementById("period").click();
-  } else if (event.code === "NumpadDecimal") {
-    document.getElementById("ce").click();
-  } else if (event.code === "Digit9") {
-    document.getElementById("9").click();
-  }
+  var key = event.key;
+  console.log(key)
+  var parsed = parseInt(key);
+  if (Number.isInteger(parsed)) {
+    inputDigit(key);
+  } else {
+    switch (key) {
+      case '.':
+        inputDigit(key);
+        break;
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+        inputOperator(key);
+        break;
+      case 'Enter':
+      case '=':
+        console.log("fire!!!!!!!!")
+        calculate();
+        break;
+  }}
 });
 
 var current = 0;
