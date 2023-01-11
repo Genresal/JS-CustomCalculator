@@ -13,12 +13,12 @@
     <table class="calculator" >
     <tr>
         <td colspan="3"> 
-            <p>Calculator<p/> </td>
+            <p>Calculator</p> </td>
         <td> 
       </tr>
       <tr>
         <td colspan="4"> 
-            <input class="display-box" type="text" id="displayBuffer" disabled /> 
+            <input class="buffer-box" type="text" id="displayBuffer" disabled /> 
           </td>
       </tr>
       <tr>
@@ -28,34 +28,34 @@
       </tr>
       <tr>
         <td> <button class="button" value="%" onclick="inputDigit('%')" >%</button> </td>
-        <td> <button id="ce" class="button" value="CE" onclick="clearScreen()" >CE</button> </td>
-        <td> <button class="button" value="C" onclick="clearScreen()" id="btn"  >C</button> </td>
-        <td> <button id="backspace" class="button" value="bs" onclick="backspace()" ><i class="fa fa-backspace"></i></button> </td>
+        <td> <button class="button" value="CE" onclick="clearResult()" >CE</button> </td>
+        <td> <button class="button" value="C" onclick="clearResult()" >C</button> </td>
+        <td> <button class="button" value="bs" onclick="backspace()" ><i class="fa fa-backspace"></i></button> </td>
       </tr>
       <tr>
-        <td> <button id="1" class="button" value="1" onclick="inputDigit('1')" >1</button> </td>
-        <td> <button id="2" class="button" value="2" onclick="inputDigit('2')" >2</button> </td>
-        <td> <button id="3" class="button" value="3" onclick="inputDigit('3')" >3</button> </td>
-        <td> <button id="divide" class="button" value="/" onclick="inputOperator('/')" >/</button> </td>
+        <td> <button class="button" value="1" onclick="inputDigit('1')" >1</button> </td>
+        <td> <button class="button" value="2" onclick="inputDigit('2')" >2</button> </td>
+        <td> <button class="button" value="3" onclick="inputDigit('3')" >3</button> </td>
+        <td> <button class="button" value="/" onclick="inputOperator('/')" >/</button> </td>
       </tr>
       <tr>
-        <td> <button id="4" class="button" value="4" onclick="inputDigit('4')" >4</button> </td>
-        <td> <button id="5" class="button" value="5" onclick="inputDigit('5')" >5</button> </td>
-        <td> <button id="6" class="button" value="6" onclick="inputDigit('6')" >6</button> </td>
-        <td> <button id="subtract" class="button" value="-" onclick="inputOperator('-')" >-</button> </td>
+        <td> <button class="button" value="4" onclick="inputDigit('4')" >4</button> </td>
+        <td> <button class="button" value="5" onclick="inputDigit('5')" >5</button> </td>
+        <td> <button class="button" value="6" onclick="inputDigit('6')" >6</button> </td>
+        <td> <button class="button" value="-" onclick="inputOperator('-')" >-</button> </td>
       </tr>
       <tr>
-        <td> <button id="7" class="button" value="7" onclick="inputDigit('7')" >7</button> </td>
-        <td> <button id="8" class="button" value="8" onclick="inputDigit('8')" >8</button> </td>
-        <td> <button id="9" class="button" value="9" onclick="inputDigit('9')" >9</button> </td>
-        <td> <button id="add" class="button" value="+" onclick="inputOperator('+')" >+</button> </td>
+        <td> <button class="button" value="7" onclick="inputDigit('7')" >7</button> </td>
+        <td> <button class="button" value="8" onclick="inputDigit('8')" >8</button> </td>
+        <td> <button class="button" value="9" onclick="inputDigit('9')" >9</button> </td>
+        <td> <button class="button" value="+" onclick="inputOperator('+')" >+</button> </td>
       </tr>
       <tr>
-        <td> <button id="period" class="button" value="." onclick="inputDigit('.')" >.</button> </td>
-        <td> <button id="0" class="button" value="0" onclick="inputDigit('0')" >0</button> </td>
+        <td> <button class="button" value="." onclick="inputDigit('.')" >.</button> </td>
+        <td> <button class="button" value="0" onclick="inputDigit('0')" >0</button> </td>
      
-        <td> <button id="enter" class="button" value="=" onclick="calculate()" id="btn" >=</button> </td>
-        <td> <button id="multiply" class="button" value="*" onclick="inputOperator('*')" >*</button></td>
+        <td> <button class="button" value="=" onclick="calculate()" >=</button> </td>
+        <td> <button class="button" value="*" onclick="inputOperator('*')" >*</button></td>
       </tr>
     </table>
      

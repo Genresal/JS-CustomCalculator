@@ -1,17 +1,71 @@
 const displayElement = document.getElementById('displayElement');
 const displayBuffer = document.getElementById('displayBuffer');
 
-function clearScreen() {
-  displayElement.value = "";
-  displayBuffer.value = "";
+var current = 0;
+var firstOperand = 0;
+var secondOperand = 0;
+var operator = null;
+var waitingForSecondOperand = false;
+const commands = [];
+var error = null;
 
-  firstOperand = 0;
-  secondOperand = 0;
-  operator = null;
-  waitingForSecondOperand = false;
+function add(x, y) {
+  return parseFloat(x) + parseFloat(y);
+}
+
+function sub(x, y) {
+  return x - y;
+}
+
+function mul(x, y) {
+  return x * y;
+}
+
+function div(x, y) {
+  if (y == 0) {
+    onError("Cannot divide by zero");
+    return;
+  }
+
+  return x / y;
+}
+
+const Command = function (execute, undo) {
+  this.execute = execute;
+  this.undo = undo;
+}
+
+const AddCommand = function () {
+  return new Command(add, sub);
+}
+
+const SubCommand = function () {
+  return new Command(sub, add);
+}
+
+const MulCommand = function () {
+  return new Command(mul, div);
+}
+
+const DivCommand = function () {
+  return new Command(div, mul);
+}
+
+function execute(command) {
+  current = command.execute(firstOperand, secondOperand);
+  commands.push(command);
+}
+
+function undo () {
+  const command = commands.pop();
+  current = command.undo(current, secondOperand);
 }
 
 function inputOperator(operator) {
+  if(error) {
+    return;
+  }
+
   if (firstOperand == 0) {
     firstOperand = displayElement.value;
   } else if (this.operator && !waitingForSecondOperand) {
@@ -24,14 +78,12 @@ function inputOperator(operator) {
   waitingForSecondOperand = true;
 }
 
-function backspace() {
-  displayBuffer.value = "";
-  firstOperand = 0;
-  secondOperand = 0;
-  operator = 0;
+function inputDigit(value) {
+if(error) {
+  clearResult();
+  error = null;
 }
 
-function inputDigit(value) {
   if (waitingForSecondOperand) {
     displayElement.value = value;
     waitingForSecondOperand = false;
@@ -47,6 +99,10 @@ function onError(value) {
 }
 
 function calculate() {
+  if(error) {
+    return;
+  }
+
     console.log(`${firstOperand} ${operator} ${secondOperand}`);
   if (secondOperand != 0) {
     firstOperand = displayElement.value;
@@ -60,6 +116,23 @@ function calculate() {
 
   displayElement.value = current;
   firstOperand = current;
+}
+
+function backspace() {
+  displayBuffer.value = "";
+  firstOperand = 0;
+  secondOperand = 0;
+  operator = 0;
+}
+
+function clearResult() {
+  displayElement.value = "";
+  displayBuffer.value = "";
+
+  firstOperand = 0;
+  secondOperand = 0;
+  operator = null;
+  waitingForSecondOperand = false;
 }
 
 function selectCommandByOperator(operator) {
@@ -100,67 +173,7 @@ document.addEventListener("keydown", function (event) {
         break;
       case 'Enter':
       case '=':
-        console.log("fire!!!!!!!!")
         calculate();
         break;
   }}
 });
-
-var current = 0;
-var firstOperand = 0;
-var secondOperand = 0;
-var operator = null;
-var waitingForSecondOperand = false;
-const commands = [];
-var error = null;
-
-function add(x, y) {
-  return parseFloat(x) + parseFloat(y);
-}
-
-function sub(x, y) {
-  return x - y;
-}
-
-function mul(x, y) {
-  return x * y;
-}
-
-function div(x, y) {
-  if (y == 0) {
-    onError("Cannot divide by zero");
-    return;
-  }
-  return x / y;
-}
-
-const Command = function (execute, undo) {
-  this.execute = execute;
-  this.undo = undo;
-}
-
-const AddCommand = function () {
-  return new Command(add, sub);
-}
-
-const SubCommand = function () {
-  return new Command(sub, add);
-}
-
-const MulCommand = function () {
-  return new Command(mul, div);
-}
-
-const DivCommand = function () {
-  return new Command(div, mul);
-}
-
-function execute(command) {
-  current = command.execute(firstOperand, secondOperand);
-  commands.push(command);
-}
-
-function undo () {
-  const command = commands.pop();
-  current = command.undo(current, secondOperand);
-}
