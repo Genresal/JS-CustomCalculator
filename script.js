@@ -108,6 +108,10 @@ function onError(value) {
   displayElement.value = value;
 }
 
+function negate() {
+  displayElement.value = -displayElement.value;
+}
+
 function calculate() {
   if(error) {
     return;
