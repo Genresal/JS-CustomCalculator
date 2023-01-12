@@ -9,58 +9,51 @@
 </head>
 
 <body>
- 
     <table class="calculator" >
-    <tr>
-        <td colspan="3"> 
-            <p>Calculator</p> </td>
-        <td> 
+      <tr>
+        <td colspan="3"> <p>Calculator</p> </td>
       </tr>
       <tr>
-        <td colspan="4"> 
-            <input class="buffer-box" type="text" id="displayBuffer" disabled /> 
-          </td>
+        <td colspan="4"> <input class="buffer-box" type="text" id="displayBuffer" disabled /> </td>
       </tr>
       <tr>
-        <td colspan="4"> 
-            <input class="display-box" type="text" id="displayElement" disabled /> 
-          </td>
+        <td colspan="4"> <input class="display-box" type="text" id="displayInput" disabled /> </td>
       </tr>
       <tr>
-        <td> <button class="button" value="%" onclick="inputDigit('%')" >%</button> </td>
-        <td> <button class="button" value="CE" onclick="clearResult()" >CE</button> </td>
-        <td> <button class="button" value="C" onclick="clearResult()" >C</button> </td>
-        <td> <button class="button" value="bs" onclick="backspace()" ><i class="fa fa-backspace"></i></button> </td>
+        <td> <button type="button" class="fun-btn" value="%" >%</button> </td>
+        <td> <button type="button" class="fun-btn" id="clear" value="CE" >CE</button> </td>
+        <td> <button type="button" class="fun-btn" id="clear" value="C" >C</button> </td>
+        <td> <button type="button" class="fun-btn" id="erase" value="bs" ><i class="fa fa-backspace"></i></button> </td>
       </tr>
       <tr>
-        <td> <button class="button" value="1/x" >1/x</button> </td>
-        <td> <button class="button" value="x^2" >x^2</button> </td>
-        <td> <button class="button" value="x%2" >x%2</button> </td>
-        <td> <button class="button" value="/" onclick="inputOperator('/')" >/</button> </td>
+        <td> <button type="button" class="fun-btn" value="1/x" >1/x</button> </td>
+        <td> <button type="button" class="fun-btn" value="x^2" >x^2</button> </td>
+        <td> <button type="button" class="fun-btn" value="x%2" >x%2</button> </td>
+        <td> <button type="button" class="fun-btn" value="/" id="op" >/</button> </td>
       </tr>
       <tr>
-        <td> <button class="button" value="1" onclick="inputDigit('1')" >1</button> </td>
-        <td> <button class="button" value="2" onclick="inputDigit('2')" >2</button> </td>
-        <td> <button class="button" value="3" onclick="inputDigit('3')" >3</button> </td>
-        <td> <button class="button" value="*" onclick="inputOperator('*')" >*</button></td>
+        <td> <button type="button" class="num-btn" value="1" >1</button> </td>
+        <td> <button type="button" class="num-btn" value="2" >2</button> </td>
+        <td> <button type="button" class="num-btn" value="3" >3</button> </td>
+        <td> <button type="button" class="fun-btn" value="*" id="op" >*</button></td>
       </tr>
       <tr>
-        <td> <button class="button" value="4" onclick="inputDigit('4')" >4</button> </td>
-        <td> <button class="button" value="5" onclick="inputDigit('5')" >5</button> </td>
-        <td> <button class="button" value="6" onclick="inputDigit('6')" >6</button> </td>
-        <td> <button class="button" value="-" onclick="inputOperator('-')" >-</button> </td>
+        <td> <button type="button" class="num-btn" value="4" >4</button> </td>
+        <td> <button type="button" class="num-btn" value="5" >5</button> </td>
+        <td> <button type="button" class="num-btn" value="6" >6</button> </td>
+        <td> <button type="button" class="fun-btn" value="-" id="op" >-</button> </td>
       </tr>
       <tr>
-        <td> <button class="button" value="7" onclick="inputDigit('7')" >7</button> </td>
-        <td> <button class="button" value="8" onclick="inputDigit('8')" >8</button> </td>
-        <td> <button class="button" value="9" onclick="inputDigit('9')" >9</button> </td>
-        <td> <button class="button" value="+" onclick="inputOperator('+')" >+</button> </td>
+        <td> <button type="button" class="num-btn" value="7" >7</button> </td>
+        <td> <button type="button" class="num-btn" value="8" >8</button> </td>
+        <td> <button type="button" class="num-btn" value="9" >9</button> </td>
+        <td> <button type="button" class="fun-btn" value="+" id="op" >+</button> </td>
       </tr>
       <tr>
-        <td> <button class="button" value="+/-" onclick="negate()">+/-</button> </td>
-        <td> <button class="button" value="0" onclick="inputDigit('0')" >0</button> </td>
-       <td> <button class="button" value="." onclick="inputDecimalPoint('.')" >.</button> </td>
-        <td> <button class="calculateButton" value="=" onclick="calculate()" >=</button> </td>
+        <td> <button type="button" class="fun-btn" value="+/-" >+/-</button> </td>
+        <td> <button type="button" class="num-btn" value="0" >0</button> </td>
+       <td> <button type="button" class="num-btn" value="." >.</button> </td>
+        <td> <button type="button" class="fun-btn" value="=" id="evaluate" >=</button> </td>
 
       </tr>
     </table>

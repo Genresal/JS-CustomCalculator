@@ -35,7 +35,7 @@
   height: 65%;
 }
 
-button {
+.num-btn {
     background-color: #fafafa;
     border: 1px solid #ebebeb;
     color: #333;
@@ -46,16 +46,36 @@ button {
     height: 100%;
   }
   
-  button:hover {
+.num-btn:hover {
     background-color: #eee;
   }
   
-  button:active {
+.num-btn:active {
     background-color: #ddd;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1) inset;
   }
 
-.calculateButton {
+.fun-btn {
+    background-color: #fafafa;
+    border: 1px solid #ebebeb;
+    color: #333;
+    font-size: 16px;
+    padding: 12px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  
+.fun-btn:hover {
+    background-color: #eee;
+  }
+  
+.fun-btn:active {
+    background-color: #ddd;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1) inset;
+  }
+
+.res-btn {
     background-color: #0078d7;
     color: white;
     border: none;
@@ -66,11 +86,11 @@ button {
     height: 100%;
   }
   
-  .calculateButton:hover {
+.res-btn:hover {
     background-color: #0288d1;
   }
   
-  .calculateButton:active {
+.res-btn:active {
     background-color: #006ac1;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1) inset;
   }
