@@ -1,19 +1,23 @@
 // Variables
-
 let displayInput = document.querySelector('#displayInput');
 let displayBuffer = document.querySelector('#displayBuffer');
 
 let buttons = document.querySelectorAll('button');
 let eraseBtn = document.querySelector('#erase');
-let clearBtn = document.querySelector('#clear');
+let clearBtn = document.querySelector('#сlear');
+let clearEntryBtn = document.querySelector('#сlearEntry');
 let evaluate = document.querySelector('#evaluate');
 
 displayInput.value = 0;
 
 // Clear
-
 clearBtn.addEventListener("click", () => {
     clearResults();
+})
+
+// CE
+clearEntryBtn.addEventListener("click", () => {
+    calculator.waitingForSecondOperand ? displayInput.value = 0 : clearResults();
 })
 
 // Buttons
@@ -41,26 +45,20 @@ buttons.forEach((btn) => {
 })
 
 // Functions
-
-/*function onError(value) {
-  error = value;
-  displayInput.value = value;
-}*/
-
 function inputNumber(value) {
-    /*if (error) {
-      clearResult();
-      error = null;
-    }*/
+    if (calculator.error) {
+        clearResult();
+        calculator.clear();
+    }
+    
     if (value == ".") {
         if (!displayInput.value.includes('.')) {
             displayInput.value += value;
         }
-        
         return;
     }
     
-    if (calculator.waitingForSecondOperand || displayInput.value === 0) {
+    if (calculator.waitingForSecondOperand || displayInput.value == '0') {
         displayInput.value = value;
         calculator.waitingForSecondOperand = false;
         calculator.secondOperand = 0;
@@ -70,45 +68,43 @@ function inputNumber(value) {
 }
 
 function inputOperator(operator) {
-    /*if(error) {
-    return;*/
-  if (calculator.firstOperand == 0) {
-      calculator.firstOperand = displayInput.value;
-  } else if (calculator.operator && !calculator.waitingForSecondOperand) {
-    calculate();
-    calculator.firstOperand = displayInput.value;
-  }
+    if(calculator.error) {
+        return;
+    }
+    if (calculator.firstOperand == 0) {
+        calculator.firstOperand = displayInput.value;
+    } else if (calculator.operator && !calculator.waitingForSecondOperand) {
+        calculate();
+        calculator.firstOperand = displayInput.value;
+        calculator.secondOperand = 0;
+    }
 
-  calculator.operator = operator;
-  displayBuffer.value = `${calculator.firstOperand} ${calculator.operator}`;
-  calculator.waitingForSecondOperand = true;
+    calculator.operator = operator;
+    renderBuffer();
+    calculator.waitingForSecondOperand = true;
 }
 
 function calculate() {
-      /*if(error) {
-    return;
-  }*/
+    if(calculator.error) {
+        clearResults ();
+        return;
+    }
+    
+    if (!calculator.operator) {
+        return;
+    }
     
     console.log(`${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`);
-    if (calculator.operator == null || calculator.operator == '=') {
-        calculator.firstOperand = displayInput.value;
-        inputOperator('=');
-        return;
-    } else if (calculator.secondOperand != 0) {
+    
+    if (calculator.secondOperand != 0) {
         calculator.firstOperand = displayInput.value;
     } else {
         calculator.secondOperand = displayInput.value;
     }
 
-  displayBuffer.value = `${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`;
-
-  calculator.selectCommand();
-
-  //if(!error) {
-        displayInput.value = calculator.current;
-        calculator.firstOperand = calculator.current;
-        calculator.waitingForSecondOperand = true;
-  //}
+    renderBuffer();
+    calculator.selectCommand();
+    calculator.error ? displayInput.value = calculator.error : displayInput.value = calculator.current
 }
 
 function clearResults () {
@@ -118,8 +114,11 @@ function clearResults () {
     calculator.clear();
 }
 
-// Commands
+function renderBuffer() {
+    displayBuffer.value = calculator.getExpression();
+}
 
+// Commands
 function add(x, y) {
   return parseFloat(x) + parseFloat(y);
 }
@@ -134,8 +133,7 @@ function mul(x, y) {
 
 function div(x, y) {
   if (y == 0) {
-    onError("Cannot divide by zero");
-    return;
+    return "Cannot divide by zero";
   }
 
   return x / y;
@@ -163,7 +161,6 @@ const DivCommand = function () {
 }
 
 // Calculator
-
 const calculator = {
     current: 0,
     firstOperand: 0,
@@ -175,7 +172,15 @@ const calculator = {
     
     execute: function (command) {
         this.current = command.execute(this.firstOperand, this.secondOperand);
+        if(isNaN(this.current)) {
+            this.error = this.current;
+            this.current = 0;
+        }
+        
         this.commands.push(command);
+        
+        this.firstOperand = this.current;
+        this.waitingForSecondOperand = true;
     },
     undo: function () {
         const command = this.commands.pop();
@@ -204,14 +209,18 @@ const calculator = {
         this.secondOperand = 0;
         this.operator = null;
         this.waitingForSecondOperand = false;
+        this.error = null;
+    },
+    getExpression: function () {
+        return this.secondOperand == 0 ? 
+            `${calculator.firstOperand} ${calculator.operator}` : 
+            `${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`
     }
 }
 
 // Listen keyboard keys
-
 document.addEventListener("keydown", function (event) {
   var key = event.key;
-  console.log(key)
   var parsed = parseInt(key);
   if (Number.isInteger(parsed)) {
     inputNumber(key);
