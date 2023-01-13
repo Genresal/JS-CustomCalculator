@@ -119,19 +119,19 @@ function renderBuffer() {
 }
 
 // Commands
-function add(x, y) {
+export function add(x, y) {
   return parseFloat(x) + parseFloat(y);
 }
 
-function sub(x, y) {
+export function sub(x, y) {
   return x - y;
 }
 
-function mul(x, y) {
+export function mul(x, y) {
   return x * y;
 }
 
-function div(x, y) {
+export function div(x, y) {
   if (y == 0) {
     return "Cannot divide by zero";
   }
@@ -139,29 +139,29 @@ function div(x, y) {
   return x / y;
 }
 
-const Command = function (execute, undo) {
+export const Command = function (execute, undo) {
   this.execute = execute;
   this.undo = undo;
 }
 
-const AddCommand = function () {
+export const AddCommand = function () {
   return new Command(add, sub);
 }
 
-const SubCommand = function () {
+export const SubCommand = function () {
   return new Command(sub, add);
 }
 
-const MulCommand = function () {
+export const MulCommand = function () {
   return new Command(mul, div);
 }
 
-const DivCommand = function () {
+export const DivCommand = function () {
   return new Command(div, mul);
 }
 
 // Calculator
-const calculator = {
+export const calculator = {
     current: 0,
     firstOperand: 0,
     secondOperand: 0,
