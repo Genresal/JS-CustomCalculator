@@ -6,7 +6,6 @@ let buttons = document.querySelectorAll('button');
 let eraseBtn = document.querySelector('#erase');
 let clearBtn = document.querySelector('#сlear');
 let clearEntryBtn = document.querySelector('#сlearEntry');
-let evaluate = document.querySelector('#evaluate');
 
 // Clear
 clearBtn.addEventListener("click", () => {
@@ -31,13 +30,26 @@ buttons.forEach((btn) => {
             inputOperator(btn.value)
         }
         
-        // When clicked button is evaluate button
+        // When evaluate button clicked
         if (btn.id.match('evaluate')) {
             calculate();
         }
         
+        // When erase button clicked
+        if (btn.id.match('erase')) {
+            erase();
+        }
+        
         if (btn.value == '+/-') {
             displayInput.value = -displayInput.value;
+        }
+        
+        if (btn.value == '%') {
+            var result = calculator.percent(displayInput.value);
+            if (result != null) {
+                displayInput.value = calculator.percent(displayInput.value);
+                renderBuffer();
+            }
         }
     })
 })
@@ -110,6 +122,14 @@ function clearResults () {
     displayInput.value = 0;
     
     calculator.clear();
+}
+
+function erase () {
+    if (displayInput.value.length > 1) {
+        displayInput.value = displayInput.value.slice(0, displayInput.value.length -1);
+    } else {
+        displayInput.value = 0;
+    }
 }
 
 function renderBuffer() {
@@ -213,7 +233,25 @@ const calculator = {
         return this.secondOperand == 0 ? 
             `${calculator.firstOperand} ${calculator.operator}` : 
             `${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`
-    }
+    },
+    percent: function (value) {
+        if (this.firstOperand == 0 || this.operator == null) {
+            return;
+        }
+        switch (this.operator) {
+            case '*':
+            case '/':
+                console.log('fire!!!')
+                value = value / 100
+                break
+            case '+':
+            case '-':
+                console.log('fire2')
+                value = this.firstOperand * value / 100
+        }
+        this.secondOperand = value;
+        return value;
+    },
 }
 
 // Listen keyboard keys
