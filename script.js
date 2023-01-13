@@ -8,8 +8,6 @@ let clearBtn = document.querySelector('#сlear');
 let clearEntryBtn = document.querySelector('#сlearEntry');
 let evaluate = document.querySelector('#evaluate');
 
-displayInput.value = 0;
-
 // Clear
 clearBtn.addEventListener("click", () => {
     clearResults();
@@ -119,19 +117,19 @@ function renderBuffer() {
 }
 
 // Commands
-export function add(x, y) {
+function add(x, y) {
   return parseFloat(x) + parseFloat(y);
 }
 
-export function sub(x, y) {
+function sub(x, y) {
   return x - y;
 }
 
-export function mul(x, y) {
+function mul(x, y) {
   return x * y;
 }
 
-export function div(x, y) {
+function div(x, y) {
   if (y == 0) {
     return "Cannot divide by zero";
   }
@@ -139,29 +137,29 @@ export function div(x, y) {
   return x / y;
 }
 
-export const Command = function (execute, undo) {
+const Command = function (execute, undo) {
   this.execute = execute;
   this.undo = undo;
 }
 
-export const AddCommand = function () {
+const AddCommand = function () {
   return new Command(add, sub);
 }
 
-export const SubCommand = function () {
+const SubCommand = function () {
   return new Command(sub, add);
 }
 
-export const MulCommand = function () {
+const MulCommand = function () {
   return new Command(mul, div);
 }
 
-export const DivCommand = function () {
+const DivCommand = function () {
   return new Command(div, mul);
 }
 
 // Calculator
-export const calculator = {
+const calculator = {
     current: 0,
     firstOperand: 0,
     secondOperand: 0,
@@ -241,3 +239,11 @@ document.addEventListener("keydown", function (event) {
         break;
   }}
 });
+
+module.exports = {
+  add: add,
+  sub: sub,
+  mul: mul,
+  div: div,
+  calculator: calculator,
+}
