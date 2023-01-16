@@ -3,7 +3,6 @@ let displayInput = document.querySelector('#displayInput');
 let displayBuffer = document.querySelector('#displayBuffer');
 
 let buttons = document.querySelectorAll('button');
-let eraseBtn = document.querySelector('#erase');
 let clearBtn = document.querySelector('#сlear');
 let clearEntryBtn = document.querySelector('#сlearEntry');
 
@@ -40,16 +39,41 @@ buttons.forEach((btn) => {
             erase();
         }
         
+        // When switch sign button clicked
         if (btn.value == '+/-') {
             displayInput.value = -displayInput.value;
         }
         
+        // When percent button clicked
         if (btn.value == '%') {
             var result = calculator.percent(displayInput.value);
             if (result != null) {
-                displayInput.value = calculator.percent(displayInput.value);
+                displayInput.value = result;
                 renderBuffer();
             }
+        }
+        
+        // When 1/x button clicked
+        if (btn.value == '1/x') {
+            calculator.setFirstOperand(1);
+            calculator.setOperator('/');
+            calculate();
+        }
+        
+        // When square button clicked
+        if (btn.value == '2√x') {
+            calculator.setFirstOperand(displayInput.value);
+            calculator.setSecondOperand(2);
+            calculator.setOperator('√');
+            displayInput.value = calculator.selectCommand();
+        }
+        
+        // When pow button clicked
+        if (btn.value == 'x^2') {
+            calculator.setFirstOperand(displayInput.value);
+            calculator.setSecondOperand(2);
+            calculator.setOperator('^');
+            displayInput.value = calculator.selectCommand();
         }
     })
 })
@@ -70,10 +94,11 @@ function inputNumber(value) {
     
     if (calculator.waitingForSecondOperand || displayInput.value == '0') {
         displayInput.value = value;
-        calculator.waitingForSecondOperand = false;
-        calculator.secondOperand = 0;
+        calculator.setWaitingFlag(false);
+        calculator.setSecondOperand(0);
         return;
     }
+
     displayInput.value += value;
 }
 
@@ -82,16 +107,16 @@ function inputOperator(operator) {
         return;
     }
     if (calculator.firstOperand == 0) {
-        calculator.firstOperand = displayInput.value;
+        calculator.setFirstOperand(displayInput.value);
     } else if (calculator.operator && !calculator.waitingForSecondOperand) {
         calculate();
-        calculator.firstOperand = displayInput.value;
-        calculator.secondOperand = 0;
+        calculator.setFirstOperand(displayInput.value);
+        calculator.setSecondOperand(0);
     }
 
-    calculator.operator = operator;
+    calculator.setOperator(operator);
     renderBuffer();
-    calculator.waitingForSecondOperand = true;
+    calculator.setWaitingFlag(true);
 }
 
 function calculate() {
@@ -104,17 +129,16 @@ function calculate() {
         return;
     }
     
-    console.log(`${calculator.firstOperand} ${calculator.operator} ${calculator.secondOperand}`);
+    console.log(calculator.getExpression());
     
     if (calculator.secondOperand != 0) {
-        calculator.firstOperand = displayInput.value;
+        calculator.setFirstOperand(displayInput.value);
     } else {
-        calculator.secondOperand = displayInput.value;
+        calculator.setSecondOperand(displayInput.value);
     }
 
     renderBuffer();
-    calculator.selectCommand();
-    calculator.error ? displayInput.value = calculator.error : displayInput.value = calculator.current
+    displayInput.value = calculator.selectCommand();
 }
 
 function clearResults () {
@@ -157,6 +181,19 @@ function div(x, y) {
   return x / y;
 }
 
+function pow(base, exponent) {
+    console.log(base + " " + exponent)
+  let result = 1;
+  for (let i = 0; i < exponent; i++) {
+    result *= base;
+  }
+  return result;
+}
+
+function root(value, root) {
+  return value ** (1/root);
+}
+
 const Command = function (execute, undo) {
   this.execute = execute;
   this.undo = undo;
@@ -176,6 +213,14 @@ const MulCommand = function () {
 
 const DivCommand = function () {
   return new Command(div, mul);
+}
+
+const PowerCommand = function () {
+  return new Command(pow, root);
+}
+
+const RootCommand = function () {
+  return new Command(root, pow);
 }
 
 // Calculator
@@ -218,9 +263,17 @@ const calculator = {
             case "/":
                 this.execute(DivCommand());
                 break
+            case "^":
+              this.execute(PowerCommand());
+              break
+            case "√":
+                this.execute(RootCommand());
+                break
             default:
                 console.log("Unexpected opration.");
         }
+
+        return this.error ? calculator.error : calculator.current;
     },
     clear: function () {
         this.firstOperand = 0;
@@ -241,16 +294,26 @@ const calculator = {
         switch (this.operator) {
             case '*':
             case '/':
-                console.log('fire!!!')
                 value = value / 100
                 break
             case '+':
             case '-':
-                console.log('fire2')
                 value = this.firstOperand * value / 100
         }
         this.secondOperand = value;
         return value;
+    },
+    setWaitingFlag: function (value) {
+      this.waitingForSecondOperand = value;
+    },
+    setFirstOperand: function (value) {
+      this.firstOperand = value;
+    },
+    setSecondOperand: function (value) {
+      this.secondOperand = value;
+    },
+    setOperator: function (value) {
+      this.operator = value;
     },
 }
 
