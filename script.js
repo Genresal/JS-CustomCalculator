@@ -1,6 +1,6 @@
 //Imports
 //const calculator = require('./calculator');
-import { calculator } from './calculator.js';
+//import { calculator } from './calculator.js';
 
 // Variables
 let displayInput = document.querySelector('#displayInput');
@@ -118,6 +118,15 @@ buttons.forEach((btn) => {
         if (btn.value == 'MR') {
             displayInput.value = memory.recall();
         }
+        
+        // When MR button clicked
+        if (btn.value == 'undo') {
+            if (calculator.isCommandsInBuffer()) {
+                calculator.undo();
+                displayInput.value = calculator.current;
+                displayBuffer.value = '';
+            }
+        }
     })
 })
 
@@ -199,7 +208,7 @@ function erase () {
 function renderBuffer() {
     displayBuffer.value = calculator.getExpression();
 }
-/*
+
 // Commands
 function add(x, y) {
     return parseFloat(x) + parseFloat(y);
@@ -254,40 +263,40 @@ function unfactorial(n, x) {
 }
 
 const Command = function (execute, undo) {
-  this.execute = execute;
-  this.undo = undo;
+    this.execute = execute;
+    this.undo = undo;
 }
 
 const AddCommand = function () {
-  return new Command(add, sub);
+    return new Command(add, sub);
 }
 
 const SubCommand = function () {
-  return new Command(sub, add);
+    return new Command(sub, add);
 }
 
 const MulCommand = function () {
-  return new Command(mul, div);
+    return new Command(mul, div);
 }
 
 const DivCommand = function () {
-  return new Command(div, mul);
+    return new Command(div, mul);
 }
 
 const PowerCommand = function () {
-  return new Command(pow, root);
+    return new Command(pow, root);
 }
 
 const RootCommand = function () {
-  return new Command(root, pow);
+    return new Command(root, pow);
 }
 
 const FactorialCommand = function () {
-  return new Command(factorial, unfactorial);
+    return new Command(factorial, unfactorial);
 }
 
 const UnFactorialCommand = function () {
-  return new Command(unfactorial, factorial);
+    return new Command(unfactorial, factorial);
 }
 
 // Calculator
@@ -314,7 +323,7 @@ const calculator = {
     },
     undo: function () {
         const command = this.commands.pop();
-        this.current = command.undo(current, this.secondOperand);
+        this.current = command.undo(this.current, this.secondOperand);
     },
     selectCommand: function (input) {
         if (input !== undefined) {
@@ -382,24 +391,27 @@ const calculator = {
         return value;
     },
     setWaitingFlag: function (value) {
-      this.waitingForSecondOperand = value;
+        this.waitingForSecondOperand = value;
     },
     setFirstOperand: function (value) {
-      this.firstOperand = value;
+        this.firstOperand = value;
     },
     setSecondOperand: function (value) {
-      this.secondOperand = value;
+        this.secondOperand = value;
     },
     setOperator: function (value) {
-      this.operator = value;
+        this.operator = value;
     },
     setExpression: function (firstValue, secondValue, operator) {
         this.setFirstOperand(firstValue);
         this.setSecondOperand(secondValue);
         this.setOperator(operator);
     },
+    isCommandsInBuffer: function () {
+        return this.commands.length !== 0
+    },
 }
-*/
+
 // Memory
 const memory = {
     current: 0,
