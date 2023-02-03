@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ 
+<head>
+  <meta charset="utf-8">
+  <title>Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <table class="calculator" >
+      <tr>
+        <td colspan="3"> <p>Calculator</p> </td>
+        <td> <button type="button" class="mem-btn" value="undo" ><i class="fa fa-undo"></i></button> </td>
+      </tr>
+      <tr>
+        <td colspan="4"> <input class="buffer-box" type="text" id="displayBuffer" disabled /> </td>
+      </tr>
+      <tr>
+        <td colspan="4"> <input class="display-box" type="text" id="displayInput" value="0" disabled /> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="mem-btn" value="MC" >MC</button> </td>
+        <td> <button type="button" class="mem-btn" value="M+" >M+</button> </td>
+        <td> <button type="button" class="mem-btn" value="M-" >M-</button> </td>
+        <td> <button type="button" class="mem-btn" value="MR" >MR</button> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="fun-btn" value="%" >%</button> </td>
+        <td> <button type="button" class="fun-btn" value="n!" >n!</button> </td>
+        <td> <button type="button" class="fun-btn" value="C" id="сlear" >C</button> </td>
+        <td> <button type="button" class="fun-btn" value="bs" id="erase"><i class="fa fa-backspace"></i></button> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="fun-btn" value="1/x" >1/x</button> </td>
+        <td> <button type="button" class="fun-btn" value="x^2" >x^2</button> </td>
+        <td> <button type="button" class="fun-btn" value="2√x" >2√x</button> </td>
+        <td> <button type="button" class="fun-btn" value="^" id="op" >x^y</button> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="fun-btn" value="10^x" >10^x</button> </td>
+        <td> <button type="button" class="fun-btn" value="x^3" >x^3</button> </td>
+        <td> <button type="button" class="fun-btn" value="3√x" >3√x</button> </td>
+        <td> <button type="button" class="fun-btn" value="/" id="op" >/</button> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="num-btn" value="1" >1</button> </td>
+        <td> <button type="button" class="num-btn" value="2" >2</button> </td>
+        <td> <button type="button" class="num-btn" value="3" >3</button> </td>
+        <td> <button type="button" class="fun-btn" value="*" id="op" >*</button></td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="num-btn" value="4" >4</button> </td>
+        <td> <button type="button" class="num-btn" value="5" >5</button> </td>
+        <td> <button type="button" class="num-btn" value="6" >6</button> </td>
+        <td> <button type="button" class="fun-btn" value="-" id="op" >-</button> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="num-btn" value="7" >7</button> </td>
+        <td> <button type="button" class="num-btn" value="8" >8</button> </td>
+        <td> <button type="button" class="num-btn" value="9" >9</button> </td>
+        <td> <button type="button" class="fun-btn" value="+" id="op" >+</button> </td>
+      </tr>
+      <tr>
+        <td> <button type="button" class="fun-btn" value="+/-" >+/-</button> </td>
+        <td> <button type="button" class="num-btn" value="0" >0</button> </td>
+       <td> <button type="button" class="num-btn" value="." >.</button> </td>
+        <td> <button type="button" class="res-btn" value="=" id="evaluate" >=</button> </td>
+
+      </tr>
+    </table>
+     
+    <script type="text/javascript" src="script.js"></script>
+     
+    </body>
+     
+    </html>
